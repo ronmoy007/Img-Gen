@@ -1,6 +1,7 @@
 # Contamos únicamente con 8091 imágenes
 import numpy as np
 import pandas as pd
+import cv2
 from pathlib import Path
 
 
@@ -51,6 +52,27 @@ def FormatearDescripciones(str_Path, str_Archiv_Origen, str_NombreCsv):
     columns = ['id_imagen', 'id_seqq', 'descr']
     df = pd.DataFrame(data=np_Array, columns=columns)
     df.to_csv(str_Path+'/Preprocessing/'+str_NombreCsv, index=False, header=True)
+
+
+def resize_img(img_file, width, height):
+    """Función para cambiar las dimensiones de una imagen
+
+    Args:
+        img_file: Archivo de imagen en formato jpg
+        width: Anchura a la que se desea modificar la imagen
+        height: Altura a la que se desea modificar la imagen
+
+    Returns:
+        resized: Arreglo de vectores que representan a la imagen con sus nuevas
+            dimensiones
+    """
+
+    img = cv2.imread(img_file, cv2.IMREAD_UNCHANGED)
+    #print('Original Dimensions :', img.shape)
+    dim = (width, height)
+    resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+    #print('Resized Dimensions :', resized.shape)
+    return resized
 
 
 str_Path = '/Users/Marco/github/Img-Gen/'
